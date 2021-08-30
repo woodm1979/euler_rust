@@ -41,7 +41,7 @@ impl Iterator for Primes {
                 if incr.current_val > self.cursor {
                     // We found a prime!  It's self.cursor!
                     self.push_new_incrementer();
-                    // Don't forget to put our current-popped incr back.
+                    // Don't forget to put our currently popped incr back.
                     self.sieve_pieces.push(Reverse(incr));
                     return Some(self.cursor);
                 }

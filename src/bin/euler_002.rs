@@ -18,15 +18,13 @@
 struct Fibo {
     first: u32,
     second: u32,
-    max: u32,
 }
 
 impl Fibo {
-    fn new(max: u32) -> Fibo {
+    fn new() -> Fibo {
         Fibo {
             first: 0,
             second: 1,
-            max,
         }
     }
 }
@@ -35,14 +33,10 @@ impl Iterator for Fibo {
     type Item = u32;
 
     fn next(&mut self) -> Option<Self::Item> {
-        if self.first < self.max {
-            let old_first = self.first;
-            self.first = self.second;
-            self.second = old_first + self.second;
-            Some(old_first)
-        } else {
-            None
-        }
+        let old_first = self.first;
+        self.first = self.second;
+        self.second = old_first + self.second;
+        Some(old_first)
     }
 }
 
@@ -50,7 +44,7 @@ fn main() {
     // let max: u32 = 10;
     let max: u32 = 4000000;
 
-    let seq = Fibo::new(max).filter(|i| i & 1 == 0);
+    let seq = Fibo::new().take_while(|i| i < &max).filter(|i| i & 1 == 0);
 
     // let seq: Vec<_> = seq.collect();
     // println!("{:?}", seq);

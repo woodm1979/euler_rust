@@ -20,3 +20,13 @@ impl Iterator for Counter {
         Some(self.count)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::counter;
+    #[test]
+    fn it_works() {
+        let primes: Vec<_> = counter::Counter::new(2).take_while(|i| i < &10).collect();
+        assert_eq!(primes, [2, 4, 6, 8])
+    }
+}

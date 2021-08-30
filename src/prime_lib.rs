@@ -2,6 +2,18 @@ use std::{cmp::Reverse, collections::BinaryHeap};
 
 use crate::incrementer;
 
+/// An iterator that will return prime numbers until you run out of memory.
+///
+/// This prime-number generator is based on the Sieve of Eratosthenes.
+/// I've chosen to keep a heap of iterators instead of a giant array of candidate numbers.
+/// I believe this is more memory efficient, and was DEFINITELY more fun to write.
+///
+/// # Examples
+///
+/// ```
+/// let primes: Vec<_> = euler_rust::prime_lib::Primes::new().take_while(|i| i < &20).collect();
+/// assert_eq!(primes, [2, 3, 5, 7, 11, 13, 17, 19])
+/// ```
 #[derive(Debug)]
 pub struct Primes {
     cursor: u64,
@@ -58,6 +70,13 @@ impl Iterator for Primes {
     }
 }
 
+/// Get all prime factors of a number n.
+/// # Examples
+///
+/// ```
+/// let factors = euler_rust::prime_lib::prime_factors(&12).unwrap();
+/// assert_eq!(factors, [2, 2, 3])  // Because 2 * 2 * 3 = 12
+/// ```
 pub fn prime_factors(n: &u64) -> Result<Vec<u64>, &'static str> {
     if *n < 2 {
         return Err("Cannot determine prime factors of number less than 2");

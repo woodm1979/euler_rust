@@ -3,13 +3,13 @@ use std::{cmp::Reverse, collections::BinaryHeap};
 use crate::incrementer;
 
 #[derive(Debug)]
-struct Primes {
+pub struct Primes {
     cursor: u64,
     sieve_pieces: BinaryHeap<Reverse<incrementer::Incrementer>>,
 }
 
 impl Primes {
-    fn new() -> Primes {
+    pub fn new() -> Primes {
         Primes {
             cursor: 1,
             sieve_pieces: BinaryHeap::new(),

@@ -2,7 +2,7 @@
 //
 // What is the largest prime factor of the number 600851475143 ?
 
-use ::euler_rust::incrementer;
+use ::euler_rust::primes;
 
 fn main() {
     let foo = (5, "dog");
@@ -15,11 +15,7 @@ fn main() {
     }
 
     let max: u64 = 30;
-    // let primes = Primes::new().take_while(|i| i <= &max);
-    // let primes: Vec<_> = primes.collect();
-    let primes: Vec<_> = incrementer::Incrementer::new(2)
-        .take_while(|i| i < &max)
-        .collect();
+    let primes: Vec<_> = primes::Primes::new().take_while(|i| i < &max).collect();
     println!("{:?}", primes);
 
     println!("Hello 003")

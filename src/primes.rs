@@ -5,7 +5,7 @@ use crate::incrementer;
 #[derive(Debug)]
 struct Primes {
     cursor: u64,
-    sieve_pieces: BinaryHeap<Reverse<(u64, incrementer::Incrementer)>>,
+    sieve_pieces: BinaryHeap<Reverse<incrementer::Incrementer>>,
 }
 
 impl Primes {
@@ -15,6 +15,11 @@ impl Primes {
             sieve_pieces: BinaryHeap::new(),
         }
     }
+
+    fn push_new_incrementer(&mut self) {
+        self.sieve_pieces
+            .push(Reverse(incrementer::Incrementer::new(self.cursor)))
+    }
 }
 
 impl Iterator for Primes {
@@ -22,33 +27,32 @@ impl Iterator for Primes {
 
     fn next(&mut self) -> Option<Self::Item> {
         if self.sieve_pieces.is_empty() {
+            // We haven't really gotten started yet.  2 is the known first prime.
             self.cursor = 2;
-            self.sieve_pieces
-                .push(Reverse((2, incrementer::Incrementer::new(2))));
+            self.push_new_incrementer();
             return Some(self.cursor);
         }
 
+        // Whatever the previous first prime was, we've already returned it.
         self.cursor += 1;
 
         loop {
-            if let Some(Reverse(tup)) = self.sieve_pieces.peek() {
-                let incr_val = tup.0;
-                if incr_val > self.cursor {
-                    self.sieve_pieces.push(Reverse((
-                        self.cursor,
-                        incrementer::Incrementer::new(self.cursor),
-                    )));
+            if let Some(Reverse(mut incr)) = self.sieve_pieces.pop() {
+                if incr.current_val > self.cursor {
+                    // We found a prime!  It's self.cursor!
+                    self.push_new_incrementer();
+                    // Don't forget to put our current-popped incr back.
+                    self.sieve_pieces.push(Reverse(incr));
                     return Some(self.cursor);
                 }
-            }
-            if let Some(Reverse(tup)) = self.sieve_pieces.pop() {
-                let incr_val = tup.0;
-                if incr_val == self.cursor {
+                if incr.current_val == self.cursor {
+                    // This value is not prime as it's been eliminated by one of our incrementers.
                     self.cursor += 1;
                 }
-                let mut incr = tup.1;
-                let incr_next = incr.next().unwrap();
-                self.sieve_pieces.push(Reverse((incr_next, incr)));
+
+                // This incrementer needs to be updated and put back in self.sieve_pieces.
+                incr.next();
+                self.sieve_pieces.push(Reverse(incr));
             }
         }
     }

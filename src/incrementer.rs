@@ -1,13 +1,13 @@
 #[derive(Ord, PartialOrd, Eq, PartialEq, Debug)]
 pub struct Incrementer {
-    count: u64,
+    pub(crate) current_val: u64,
     step_size: u64,
 }
 
 impl Incrementer {
     pub fn new(step_size: u64) -> Incrementer {
         Incrementer {
-            count: 0,
+            current_val: 0,
             step_size,
         }
     }
@@ -17,8 +17,8 @@ impl Iterator for Incrementer {
     type Item = u64;
 
     fn next(&mut self) -> Option<Self::Item> {
-        self.count += self.step_size;
-        Some(self.count)
+        self.current_val += self.step_size;
+        Some(self.current_val)
     }
 }
 

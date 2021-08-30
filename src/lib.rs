@@ -1,2 +1,2 @@
 pub mod incrementer;
-pub mod primes;
+pub mod prime_lib;

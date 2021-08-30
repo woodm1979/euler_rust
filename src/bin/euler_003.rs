@@ -13,12 +13,12 @@
 
 use std::error::Error;
 
-use ::euler_rust::primes;
+use ::euler_rust::prime_lib;
 
 fn main() -> Result<(), Box<dyn Error>> {
     // let n = 13195;
     let n = 600851475143;
-    let factors = primes::prime_factors(&n)?;
+    let factors = prime_lib::prime_factors(&n)?;
     println!("{:?}", factors);
     Ok(())
 }

@@ -81,18 +81,18 @@ pub fn prime_factors(n: &u64) -> Result<Vec<u64>, &'static str> {
 #[cfg(test)]
 mod tests {
     mod primes_tests {
-        use crate::primes::Primes;
+        use crate::prime_lib::Primes;
 
         #[test]
         fn it_works() {
             let max: u64 = 20;
-            let primes_below_max: Vec<_> = Primes::new().take_while(|i| i < &max).collect();
-            assert_eq!(primes_below_max, [2, 3, 5, 7, 11, 13, 17, 19])
+            let primes: Vec<_> = Primes::new().take_while(|i| i < &max).collect();
+            assert_eq!(primes, [2, 3, 5, 7, 11, 13, 17, 19])
         }
     }
 
     mod prime_factors_tests {
-        use crate::primes::prime_factors;
+        use crate::prime_lib::prime_factors;
 
         #[test]
         fn errors_if_less_than_2() -> Result<(), String> {

@@ -1,3 +1,5 @@
+//! Your place for all things prime-number related.
+
 use std::{cmp::Reverse, collections::BinaryHeap};
 
 use crate::incrementer;

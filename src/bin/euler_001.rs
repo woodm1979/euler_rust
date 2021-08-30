@@ -1,15 +1,16 @@
-// If we list all the natural numbers below 10 that are multiples of 3 or 5, we get 3, 5, 6 and 9.
-// The sum of these multiples is 23.
-// Find the sum of all the multiples of 3 or 5 below 1000.
-//
-// cargo build --release && time ./target/release/euler_001
-// Finished release [optimized] target(s) in 0.00s
-// Sum: 233168
-//
-// real	0m0.002s
-// user	0m0.001s
-// sys	0m0.001s
-
+//! If we list all the natural numbers below 10 that are multiples of 3 or 5, we get 3, 5, 6 and 9.
+//! The sum of these multiples is 23.
+//! Find the sum of all the multiples of 3 or 5 below 1000.
+//!
+//! ```
+//! cargo build --release && time ./target/release/euler_001
+//! Finished release \[optimized] target(s) in 0.00s
+//! Sum: 233168
+//!
+//! real	0m0.002s
+//! user	0m0.001s
+//! sys	0m0.001s
+//! ```
 use std::collections::HashSet;
 
 fn get_multiples(multiplier: usize, max: &usize) -> HashSet<usize> {

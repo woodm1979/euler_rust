@@ -1,3 +1,4 @@
+#[derive(Ord, PartialOrd, Eq, PartialEq, Debug)]
 pub struct Incrementer {
     count: u64,
     step_size: u64,

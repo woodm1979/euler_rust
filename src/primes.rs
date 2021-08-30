@@ -58,13 +58,73 @@ impl Iterator for Primes {
     }
 }
 
+pub fn prime_factors(n: &u64) -> Result<Vec<u64>, &'static str> {
+    if *n < 2 {
+        return Err("Cannot determine prime factors of number less than 2");
+    }
+    let mut factored = n.clone();
+    let mut factors = Vec::new();
+    let primes = Primes::new();
+
+    for prime in primes {
+        while factored % prime == 0 {
+            factored /= prime;
+            factors.push(prime);
+        }
+        if prime > factored {
+            break;
+        }
+    }
+    return Ok(factors);
+}
+
 #[cfg(test)]
 mod tests {
-    use crate::primes::Primes;
-    #[test]
-    fn it_works() {
-        let max: u64 = 20;
-        let primes_below_max: Vec<_> = Primes::new().take_while(|i| i < &max).collect();
-        assert_eq!(primes_below_max, [2, 3, 5, 7, 11, 13, 17, 19])
+    mod primes_tests {
+        use crate::primes::Primes;
+
+        #[test]
+        fn it_works() {
+            let max: u64 = 20;
+            let primes_below_max: Vec<_> = Primes::new().take_while(|i| i < &max).collect();
+            assert_eq!(primes_below_max, [2, 3, 5, 7, 11, 13, 17, 19])
+        }
+    }
+
+    mod prime_factors_tests {
+        use crate::primes::prime_factors;
+
+        #[test]
+        fn errors_if_less_than_2() -> Result<(), String> {
+            assert_eq!(
+                prime_factors(&1),
+                Err("Cannot determine prime factors of number less than 2")
+            );
+            Ok(())
+        }
+
+        #[test]
+        fn n_equals_prime() -> Result<(), String> {
+            assert_eq!(prime_factors(&5)?, [5]);
+            Ok(())
+        }
+
+        #[test]
+        fn n_has_multiple_factors() -> Result<(), String> {
+            assert_eq!(prime_factors(&10)?, [2, 5]);
+            Ok(())
+        }
+
+        #[test]
+        fn n_has_duplicate_factors() -> Result<(), String> {
+            assert_eq!(prime_factors(&36)?, [2, 2, 3, 3]);
+            Ok(())
+        }
+
+        #[test]
+        fn n_is_semi_big() -> Result<(), String> {
+            assert_eq!(prime_factors(&13195)?, [5, 7, 13, 29]);
+            Ok(())
+        }
     }
 }

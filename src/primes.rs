@@ -1,7 +1,7 @@
-// use crate::counter;
+// use crate::incrementer;
 //
 // struct Primes {
-//     sieve_pieces: Vec<Tuple<u64, counter::Counter>>,
+//     sieve_pieces: Vec<Tuple<u64, incrementer::Incrementer>>,
 // }
 //
 // impl Primes {

@@ -17,8 +17,9 @@ impl Iterator for Incrementer {
     type Item = u64;
 
     fn next(&mut self) -> Option<Self::Item> {
+        let old_val = self.current_val;
         self.current_val += self.step_size;
-        Some(self.current_val)
+        Some(old_val)
     }
 }
 
@@ -30,6 +31,6 @@ mod tests {
         let evens_below_10: Vec<_> = incrementer::Incrementer::new(2)
             .take_while(|i| i < &10)
             .collect();
-        assert_eq!(evens_below_10, [2, 4, 6, 8])
+        assert_eq!(evens_below_10, [0, 2, 4, 6, 8])
     }
 }

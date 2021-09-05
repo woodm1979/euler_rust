@@ -12,6 +12,7 @@
 //! user	0m0.002s
 //! sys	0m0.001s
 //! ```
+use itertools::max;
 use std::error::Error;
 
 use ::euler_rust::prime_lib;
@@ -20,6 +21,8 @@ fn main() -> Result<(), Box<dyn Error>> {
     // let n = 13195;
     let n = 600851475143;
     let factors = prime_lib::prime_factors(&n)?;
-    println!("{:?}", factors);
+    // println!("{:?}", factors);
+    let max_factor = max(factors.keys()).unwrap();
+    println!("max-prime-factor = {:?}", max_factor);
     Ok(())
 }

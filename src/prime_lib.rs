@@ -1,6 +1,9 @@
 //! Your place for all things prime-number related.
 
-use std::{cmp::Reverse, collections::BinaryHeap};
+use std::{
+    cmp::Reverse,
+    collections::{BinaryHeap, HashMap},
+};
 
 use crate::incrementer;
 
@@ -76,21 +79,24 @@ impl Iterator for Primes {
 /// # Examples
 ///
 /// ```
+/// use maplit::hashmap;
 /// let factors = euler_rust::prime_lib::prime_factors(&12).unwrap();
-/// assert_eq!(factors, [2, 2, 3])  // Because 2 * 2 * 3 = 12
+/// let expected = hashmap! {2=>2, 3=> 1};
+/// assert_eq!(factors, expected)  // Because 2 * 2 * 3 = 12
 /// ```
-pub fn prime_factors(n: &u64) -> Result<Vec<u64>, &'static str> {
+pub fn prime_factors(n: &u64) -> Result<HashMap<u64, u64>, &'static str> {
     if *n < 2 {
         return Err("Cannot determine prime factors of number less than 2");
     }
     let mut factored = n.clone();
-    let mut factors = Vec::new();
+    let mut factors = HashMap::new();
     let primes = Primes::new();
 
     for prime in primes {
         while factored % prime == 0 {
             factored /= prime;
-            factors.push(prime);
+            let cardinality = factors.entry(prime).or_insert(0);
+            *cardinality += 1
         }
         if prime > factored {
             break;
@@ -126,25 +132,25 @@ mod tests {
 
         #[test]
         fn n_equals_prime() -> Result<(), String> {
-            assert_eq!(prime_factors(&5)?, [5]);
+            assert_eq!(prime_factors(&5)?, hashmap! {5 => 1});
             Ok(())
         }
 
         #[test]
         fn n_has_multiple_factors() -> Result<(), String> {
-            assert_eq!(prime_factors(&10)?, [2, 5]);
+            assert_eq!(prime_factors(&10)?, hashmap! {5=>1, 2=>1});
             Ok(())
         }
 
         #[test]
         fn n_has_duplicate_factors() -> Result<(), String> {
-            assert_eq!(prime_factors(&36)?, [2, 2, 3, 3]);
+            assert_eq!(prime_factors(&36)?, hashmap! {2=>2, 3=>2});
             Ok(())
         }
 
         #[test]
         fn n_is_semi_big() -> Result<(), String> {
-            assert_eq!(prime_factors(&13195)?, [5, 7, 13, 29]);
+            assert_eq!(prime_factors(&13195)?, hashmap! {5=>1, 7=>1, 13=>1, 29=>1});
             Ok(())
         }
     }

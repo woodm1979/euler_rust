@@ -2,10 +2,8 @@
 //!
 //! What is the smallest positive number that is evenly divisible by all of the numbers from 1 to 20?
 
-use itertools::Itertools;
 use std::cmp::max;
 use std::collections::HashMap;
-use std::convert::TryInto;
 
 use euler_rust::prime_lib::prime_factors;
 
@@ -16,7 +14,7 @@ fn main() -> Result<(), &'static str> {
 }
 
 fn smallest_divisible(max_divisor: u64) -> Result<u64, &'static str> {
-    let mut cumulative_factors: HashMap<u64, u32> = HashMap::new();
+    let mut cumulative_factors: HashMap<u64, u64> = HashMap::new();
     if max_divisor == 0 {
         return Err("There are no divisors for 0");
     }
@@ -26,16 +24,11 @@ fn smallest_divisible(max_divisor: u64) -> Result<u64, &'static str> {
 
     for i in 2..=max_divisor {
         let prime_factors = prime_factors(&i)?;
-        for (key, group) in (&prime_factors).into_iter().group_by(|&n| n).into_iter() {
-            let count: u32 = group.count().try_into().unwrap();
-            let mut key_max_count = count;
-            if cumulative_factors.contains_key(key) {
-                key_max_count = max(
-                    key_max_count,
-                    (*cumulative_factors.get(key).unwrap()).into(),
-                );
-            }
-            cumulative_factors.insert(*key, key_max_count);
+        for (prime, cardinality) in prime_factors.iter() {
+            // TODO: I'm not sure if this is the best way to accomplish this.
+            //       It seems like I'm doing 3 lookups into the HashMap and I THINK can do it in 2.
+            cumulative_factors.entry(*prime).or_insert(*cardinality);
+            cumulative_factors.insert(*prime, max(*cardinality, cumulative_factors[prime]));
         }
 
         // println!("{} : {:?}", i, prime_factors);
@@ -44,7 +37,7 @@ fn smallest_divisible(max_divisor: u64) -> Result<u64, &'static str> {
 
     let mut cum_value = 1;
     for (key, value) in cumulative_factors.iter() {
-        cum_value *= key.pow(*value);
+        cum_value *= key.pow(*value as u32);
     }
     return Ok(cum_value);
 }

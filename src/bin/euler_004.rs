@@ -32,16 +32,16 @@ fn search_diagonally() {
         // println!("i = {}", i);
         while j >= i {
             // println!("i = {}, j = {}", i, j);
-            let cur_mult = i * j;
-            if cur_mult <= max_known_palindrome {
+            let cur_multiplier = i * j;
+            if cur_multiplier <= max_known_palindrome {
                 break;
             }
             checked += 1;
-            if is_palindromic(&cur_mult) {
-                max_known_palindrome = cur_mult;
+            if is_palindromic(&cur_multiplier) {
+                max_known_palindrome = cur_multiplier;
                 maximum = i;
                 minimum = j;
-                println!("Found {} * {} = {}", i, j, cur_mult);
+                println!("Found {} * {} = {}", i, j, cur_multiplier);
                 break;
             }
             j -= 1;
@@ -66,16 +66,16 @@ fn search_diagonally() {
 //         // println!("i = {}", i);
 //         for j in (minimum + 1..=i).rev() {
 //             // println!("i = {}, j = {}", i, j);
-//             let cur_mult = i * j;
-//             if cur_mult <= max_known_palindrome {
+//             let cur_multiplier = i * j;
+//             if cur_multiplier <= max_known_palindrome {
 //                 break;
 //             }
 //             checked += 1;
-//             if is_palindromic(&cur_mult) {
-//                 max_known_palindrome = cur_mult;
+//             if is_palindromic(&cur_multiplier) {
+//                 max_known_palindrome = cur_multiplier;
 //                 maximum = i;
 //                 minimum = j;
-//                 println!("Found {} * {} = {}", i, j, cur_mult);
+//                 println!("Found {} * {} = {}", i, j, cur_multiplier);
 //                 break;
 //             }
 //         }
